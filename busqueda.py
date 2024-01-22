@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains 
 from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
+from webdriver_manager.chrome import ChromeDriverManager
 import time, xlsxwriter
 import os
 
@@ -53,7 +54,7 @@ def searchCity(name, driver, worksheet):
     # Cargo la ciudad
     # Encuentra el cuadro de búsqueda
     search_box = driver.find_element('id', 'searchboxinput')
-    search_box.send_keys(Keys.CONTROL + "a")
+    search_box.send_keys(Keys.COMMAND + "a")
     time.sleep(0.8)
     search_box.send_keys(Keys.DELETE)
     time.sleep(0.8)
@@ -66,7 +67,7 @@ def searchCity(name, driver, worksheet):
 
     rubro = 'taxi'
     
-    search_box.send_keys(Keys.CONTROL + "a")
+    search_box.send_keys(Keys.COMMAND + "a")
     time.sleep(1)
     search_box.send_keys(Keys.DELETE)
     time.sleep(1)
@@ -143,10 +144,18 @@ def loadCityList(nombre_archivo):
     return lineas
 
 def main():
+
     options = Options()
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
- 
+    options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
+
+    # Elimina la línea que especifica el ejecutable_path
+    # chrome_driver_binary = "/usr/local/bin/chromedriver"
+
+    # Utiliza ChromeDriverManager para gestionar automáticamente la versión del controlador de Chrome
+    driver = webdriver.Chrome(options=options)
+
+
     driver.get('https://www.google.com/maps')
     time.sleep(1)
     print(''''
@@ -181,7 +190,8 @@ def main():
         for city in cities:
             namefile = city + ".xlsx"
             name = city 
-            workbook = xlsxwriter.Workbook(f'/home/tom/Desktop/programa/datos/{nombre}/{namefile}')
+            ruta = os.path.join(os.getcwd(), f'datos//{namefile}')
+            workbook = xlsxwriter.Workbook(ruta)
             worksheet = workbook.add_worksheet('Primera Pagina')
             worksheet.write(0,0,'#')
             worksheet.write(0,1,'Nombre')

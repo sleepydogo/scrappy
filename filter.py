@@ -28,7 +28,8 @@ import os
 def init_selenium():
     options = Options()
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
+    driver = webdriver.Chrome(options=options)
     return driver
 
 def load_phones(filename):
@@ -38,13 +39,13 @@ def load_phones(filename):
     return data
 
 def delete_rows_with_no_phones(data):
-    data = data[~data['Direccion'].astype(str).str.contains('#')]
-    data = data[~data['Direccion'].astype(str).str.contains('[a-zA-Z]')]
+    data = data[~data['Telefono'].astype(str).str.contains('#')]
+    data = data[~data['Telefono'].astype(str).str.contains('[a-zA-Z]')]
     return data
 
 def filter(table, driver):
     for index, row in table.iterrows():
-        phone = row['Direccion']
+        phone = row['Telefono']
         if not existe_en_whatsapp(phone, driver):
             # Si la función existe() retorna False, elimina la fila
             table = table.drop(index)
@@ -56,18 +57,16 @@ def filter(table, driver):
 def existe_en_whatsapp(phone, driver):
     input = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[1]/div/div/div[2]/input')
     time.sleep(1)
-    
     input.send_keys(phone)
     time.sleep(3) 
     try:
         driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[2]/div[2]/div[2]')
-        input.send_keys(Keys.CONTROL + "a")
+        input.send_keys(Keys.COMMAND + "a")
         time.sleep(0.8)
         input.send_keys(Keys.DELETE)
         return True
-    
     except:
-        input.send_keys(Keys.CONTROL + "a")
+        input.send_keys(Keys.COMMAND + "a")
         time.sleep(0.8)
         input.send_keys(Keys.DELETE)
         return False
@@ -77,15 +76,11 @@ def existe_en_whatsapp(phone, driver):
 def open_whatsapp(driver):
     driver.get('https://web.whatsapp.com/')
     time.sleep(30)
-    
     three_dots = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/div/span')
     three_dots.click()
-
     time.sleep(2)
-
     new_group = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/span/div/ul/li[1]/div')
     new_group.click()
-
     time.sleep(2)
 
 
@@ -94,20 +89,18 @@ def main():
     driver = init_selenium()
     open_whatsapp(driver)
     ruta_actual = os.getcwd()
-    ruta_datos = os.path.join(ruta_actual, "datos")
+    ruta_datos = os.path.join(ruta_actual, "datos2")
     for carpeta in os.listdir(ruta_datos):
         ruta_archivo = os.path.join(ruta_datos, f'{carpeta}')
         for archivo in os.listdir(ruta_archivo):
             ruta_lectura = os.path.join(ruta_archivo, f'{archivo}')
             carpeta_filtrado = os.path.join(ruta_archivo, 'filtrado/')
-            print(ruta_lectura)
-            print(carpeta_filtrado)
-            print(archivo)
             try:
                 table = load_phones(ruta_lectura)
                 table = delete_rows_with_no_phones(table)
                 table = filter(table, driver)    
                 table.to_excel(str(carpeta_filtrado + archivo.replace(".xlsx", "-filtrado.xlsx")))    
+                print(archivo + ' listo.')
             except Exception as e:
                 print(archivo + ' --> No se pudo procesar')
                 print(e)
