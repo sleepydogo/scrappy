@@ -1,0 +1,118 @@
+Mexico, Acapulco
+Mexico, Aguascalientes
+Mexico, Apodaca
+Mexico, Buenavista
+Mexico, Campeche
+Mexico, Cancún
+Mexico, Celaya
+Mexico, Chalco
+Mexico, Chetumal
+Mexico, Chicoloapan
+Mexico, Chihuahua
+Mexico, Chilpancingo
+Mexico, Chimalhuacán
+Mexico, Ciudad Acuña
+Mexico, Ciudad de México DF (CDMX)
+Mexico, Ciudad del Carmen
+Mexico, Ciudad López Mateos
+Mexico, Ciudad Madero
+Mexico, Ciudad Obregón
+Mexico, Ciudad Valles
+Mexico, Ciudad Victoria
+Mexico, Coatzacoalcos
+Mexico, Colima
+Mexico, Córdoba
+Mexico, Cuauhtémoc
+Mexico, Cuautitlán
+Mexico, Cuautitlán Izcalli
+Mexico, Cuautla
+Mexico, Cuernavaca
+Mexico, Culiacán
+Mexico, Delicias
+Mexico, Durango
+Mexico, Ecatepec
+Mexico, Ensenada
+Mexico, Fresnillo
+Mexico, General Escobedo
+Mexico, Gómez Palacio
+Mexico, Guadalajara
+Mexico, Guadalupe
+Mexico, Guaymas
+Mexico, Hermosillo
+Mexico, Hidalgo del Parral
+Mexico, Iguala
+Mexico, Irapuato
+Mexico, Ixtapaluca
+Mexico, Jiutepec
+Mexico, Juárez
+Mexico, La Paz
+Mexico, León
+Mexico, Los Cabos (San José y Cabo San Lucas)
+Mexico, Los Mochis
+Mexico, Mahahual
+Mexico, Manzanillo
+Mexico, Matamoros
+Mexico, Mazatlán
+Mexico, Mérida
+Mexico, Mexicali
+Mexico, Minatitlán
+Mexico, Miramar
+Mexico, Monclova
+Mexico, Monterrey
+Mexico, Morelia
+Mexico, Naucalpan
+Mexico, Naucalpan de Juárez
+Mexico, Navojoa
+Mexico, Nezahualcóyotl
+Mexico, Nogales
+Mexico, Nuevo Laredo
+Mexico, Oaxaca de Juárez
+Mexico, Ojo de Agua
+Mexico, Orizaba
+Mexico, Pachuca
+Mexico, Piedras Negras
+Mexico, Playa del Carmen
+Mexico, Poza Rica de Hidalgo
+Mexico, Puebla
+Mexico, Puerto Vallarta
+Mexico, Querétaro
+Mexico, Reynosa
+Mexico, Salamanca
+Mexico, Saltillo
+Mexico, San Cristóbal de las Casas
+Mexico, San Francisco Coacalco
+Mexico, San Juan Bautista Tuxtepec
+Mexico, San Juan del Río
+Mexico, San Luis Potosí
+Mexico, San Luis Río Colorado
+Mexico, San Miguel de Allende
+Mexico, San Nicolás de los Garza
+Mexico, San Pablo de las Salinas
+Mexico, San Pedro Garza García
+Mexico, Santa Catarina
+Mexico, Soledad de Graciano Sánchez
+Mexico, Tampico
+Mexico, Tapachula
+Mexico, Taxco
+Mexico, Tehuacán
+Mexico, Tepexpan
+Mexico, Tepic
+Mexico, Texcoco de Mora
+Mexico, Tijuana
+Mexico, Tlalnepantla
+Mexico, Tlaquepaque
+Mexico, Toluca
+Mexico, Tonalá
+Mexico, Torreón
+Mexico, Tulancingo de Bravo
+Mexico, Tuxtla
+Mexico, Uruapan
+Mexico, Veracruz
+Mexico, Villa de Álvarez
+Mexico, Villa Nicolás Romero
+Mexico, Villahermosa
+Mexico, Xalapa Enriquez
+Mexico, Xico
+Mexico, Zacatecas
+Mexico, Zamora
+mexico, Zapopan

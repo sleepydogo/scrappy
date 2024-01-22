@@ -1,0 +1,48 @@
+Peru, Lima
+Peru, Callao
+Peru, Arequipa
+Peru, Trujillo
+Peru, Chiclayo
+Peru, Chimbote
+Peru, Piura
+Peru, Cusco
+Peru, Huancayo
+Peru, Iquitos
+Peru, Pucallpa
+Peru, Juliaca
+Peru, Tacna
+Peru, Ica
+Peru, Tarapoto
+Peru, Ayacucho
+Peru, Cajamarca
+Peru, Huacho
+Peru, Huánuco
+Peru, Paita
+Peru, Sullana
+Peru, Huaycan
+Peru, Barranca
+Peru, Puno
+Peru, San Ignacio
+Peru, Huaraz
+Peru, Pisco
+Peru, Tumbes
+Peru, Chosica
+Peru, Puerto Maldonado
+Peru, Abancay
+Peru, Moquegua
+Peru, Víctor Larco Herrera
+Peru, Cerro de Pasco
+Peru, Moyobamba
+Peru, Huancavelica
+Peru, Camaná
+Peru, Chancay
+Peru, Chachapoyas
+Peru, Ferreñafe
+Peru, Moche
+Peru, Jauja
+Peru, Pacasmayo
+Peru, Monsefú
+Peru, Zarumilla
+Peru, Puerto Pimentel
+Peru, Concepción
+Peru, Chupaca
