@@ -1,3 +1,6 @@
+# Este filtro deja solo los numeros que tienen whatsapp
+#   Author: Sleepydogo
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -10,25 +13,9 @@ import pandas as pd
 import time
 import os
 
-
-#   Elementos del HTML 
-# 
-# tres puntos
-# /html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/div/span
-# 
-# nuevo grupo
-# /html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/span/div/ul/li[1]/div
-# 
-# input
-# /html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[1]/div/div/div[2]/input
-# 
-# contacto
-# /html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[2]/div[2]/div[2]
-
 def init_selenium():
     options = Options()
     options.add_argument('--disable-dev-shm-usage')
-    options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
     driver = webdriver.Chrome(options=options)
     return driver
 

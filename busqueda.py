@@ -10,51 +10,16 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time, xlsxwriter
 import os
 
-def extraerInformacionDeUrl(url, browser, worksheet, index):
-
-    browser.get(url)
-    time.sleep(2)
-    try:
-        nombre =  browser.find_element(By.XPATH, '/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div/div[1]/div[1]/h1').text
-    except:
-        pass
-    try: 
-        telefono = browser.find_element(By.CSS_SELECTOR, 'div.RcCsl:nth-child(8) > button:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1)').text
-    except:                                               
-        telefono = 'No tiene...'                          
-    try:
-        web = browser.find_element(By.CSS_SELECTOR, '.ITvuef > div:nth-child(1)').text
-    except:
-        web = 'No tiene...'
-    try:                                      
-        menu = browser.find_element(By.CSS_SELECTOR, 'a.CsEnBe > div:nth-child(1) > div:nth-child(3) > div:nth-child(2)').text
-    except:
-        menu = 'No tiene...'
-    try:                                            
-        direccion = browser.find_element(By.CSS_SELECTOR, 'div.RcCsl:nth-child(3) > button:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1)').text
-    except: 
-        direccion = 'No tiene...'
-    print('------------------------------')
-    print('     * Se encontro: --> ')
-    print(str(nombre) +'\n' + str(telefono)+'\n' + str(web)+'\n' + str(menu)+'\n' + str(direccion)+ '\n')            
-
-    worksheet.write(index+1, 0, str(index))
-    worksheet.write(index+1, 1, str(nombre))
-    worksheet.write(index+1, 2, str(url))
-    worksheet.write(index+1, 3, str(direccion))
-    worksheet.write(index+1, 4, str(telefono))
-    worksheet.write(index+1, 5, str(web))
-    worksheet.write(index+1, 6, str(menu))
-
-
-    print('\n     * Se almaceno correctamente ' + str(nombre) + '.')
-
 
 def searchCity(name, driver, worksheet):
     # Cargo la ciudad
     # Encuentra el cuadro de búsqueda
     search_box = driver.find_element('id', 'searchboxinput')
-    search_box.send_keys(Keys.COMMAND + "a")
+    # LINUX:
+    search_box.send_keys(Keys.CONTROL + "a")
+    
+    # MAC:
+    # search_box.send_keys(Keys.COMMAND + "a")    
     time.sleep(0.8)
     search_box.send_keys(Keys.DELETE)
     time.sleep(0.8)
@@ -67,7 +32,11 @@ def searchCity(name, driver, worksheet):
 
     rubro = 'taxi'
     
-    search_box.send_keys(Keys.COMMAND + "a")
+    # LINUX:
+    search_box.send_keys(Keys.CONTROL + "a")
+    
+    # MAC:
+    # search_box.send_keys(Keys.COMMAND + "a")
     time.sleep(1)
     search_box.send_keys(Keys.DELETE)
     time.sleep(1)
@@ -105,32 +74,28 @@ def searchCity(name, driver, worksheet):
         except:                                               
             telefono = None                  
         
-        if telefono == None: 
-            try: 
-                telefono = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[1]/div/div/div[2]/div[4]/div[2]/span[2]/span[2]').text
-            except:                                               
-                telefono = '#########'     
-        try:
-            web = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[2]/div[1]/a').get_attribute("href")
+        if telefono != None: 
+            try:
+                web = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[2]/div[1]/a').get_attribute("href")
 
-        except:
-            web = '-'
-        try:                                            
-            direccion = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[1]/div/div/div[2]/div[4]/div[1]/span[2]/span[2]').text
-        except: 
-            direccion = '-'
-        try:                                            
-            servicio = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[1]/div/div/div[2]/div[4]/div[1]/span[1]/span').text
-        except: 
-            servicio = '-'
-        print(f'     * Se encontro: --> {a} {nombre} {telefono} {direccion} {servicio} {web}')
-        worksheet.write(a+1, 0, str(a))
-        worksheet.write(a+1, 1, str(nombre))
-        worksheet.write(a+1, 2, str(servicio))
-        worksheet.write(a+1, 3, str(telefono))
-        worksheet.write(a+1, 4, str(web))
-        worksheet.write(a+1, 5, str(direccion))
-        a += 1
+            except:
+                web = '-'
+            try:                                            
+                direccion = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[1]/div/div/div[2]/div[4]/div[1]/span[2]/span[2]').text
+            except: 
+                direccion = '-'
+            try:                                            
+                servicio = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div[8]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[1]/div[1]/div['+str(i)+']/div/div[2]/div[4]/div[1]/div/div/div[2]/div[4]/div[1]/span[1]/span').text
+            except: 
+                servicio = '-'
+            print(f'     * Se encontro: --> {a} {nombre} {telefono} {direccion} {servicio} {web}')
+            worksheet.write(a+1, 0, str(a))
+            worksheet.write(a+1, 1, str(nombre))
+            worksheet.write(a+1, 2, str(servicio))
+            worksheet.write(a+1, 3, str(telefono))
+            worksheet.write(a+1, 4, str(web))
+            worksheet.write(a+1, 5, str(direccion))
+            a += 1
         
 def loadCityList(nombre_archivo):
     # Inicializar un array para almacenar las líneas
@@ -147,14 +112,15 @@ def main():
 
     options = Options()
     options.add_argument('--disable-dev-shm-usage')
-    options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
-
-    # Elimina la línea que especifica el ejecutable_path
-    # chrome_driver_binary = "/usr/local/bin/chromedriver"
+    
+    # MAC: /Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome
+    #options.binary_location = "/Applications/Google Chrome 2.app/Contents/MacOS/Google Chrome"
+    
+    # LINUX: /usr/bin/google-chrome
+    options.binary_location = "/usr/bin/google-chrome"
 
     # Utiliza ChromeDriverManager para gestionar automáticamente la versión del controlador de Chrome
     driver = webdriver.Chrome(options=options)
-
 
     driver.get('https://www.google.com/maps')
     time.sleep(1)
@@ -184,13 +150,12 @@ def main():
     ruta_ciudades = os.path.join(ruta_actual, "listas-ciudades")
     for archivo in os.listdir(ruta_ciudades):
         nombre = 'listas-ciudades/' + archivo
-    
         cities = loadCityList(nombre)
 
         for city in cities:
             namefile = city + ".xlsx"
             name = city 
-            ruta = os.path.join(os.getcwd(), f'datos//{namefile}')
+            ruta = os.path.join(os.getcwd(), f'{namefile}')
             workbook = xlsxwriter.Workbook(ruta)
             worksheet = workbook.add_worksheet('Primera Pagina')
             worksheet.write(0,0,'#')
