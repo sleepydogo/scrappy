@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains 
 from selenium.common.exceptions import NoSuchElementException
 import pandas as pd
-import time, xlsxwriter, os, textwrap, argparse, platform, sys
+import time, xlsxwriter, os, textwrap, argparse, platform, sys, phonenumbers, pycountry
 
 # Variables globales
 COUNTRY = None
@@ -135,13 +135,13 @@ def create_driver():
 def scrap_maps(cities, driver):
     '''
     Esta funcion scrapea maps, almacenando todo lo que encuentra en un archivo 
-    llamado 'raw_data_OUTPUT.xlsx'
+    llamado 'raw_data_COUNTRY.xlsx'
     '''
     # Buscamos la pagina de google maps
     driver.get('https://www.google.com/maps')
     # Le damos un delay para que cargue la info
     time.sleep(1)
-    filename = f'raw_data_{OUTPUT}.xlsx'
+    filename = f'raw_data_{COUNTRY}.xlsx'
     # creamos el archivo xlsx
     workbook = xlsxwriter.Workbook(filename)
     worksheet = workbook.add_worksheet('Primera Pagina')
@@ -166,19 +166,92 @@ def scrap_maps(cities, driver):
 
 def phone_filter(workbook_name):
     '''
-    Esta funcion carga de nuevo el excel con los contactos y filtra dejando
-    solo los que tengan un numero de telefono
+    Esta funcion toma como entrada el nombre de un excel y lo filtra
+    dejando solo aquellas filas que contengan un numero de telefono valido
     '''
-    dataset = pd.read_excel(workbook_name)
+    data = pd.read_excel(workbook_name)
     data = data[~data['Telefono'].astype(str).str.contains('#')]
     data = data[~data['Telefono'].astype(str).str.contains('[a-zA-Z]')]
+    data.to_excel(f'contactos_con_telefono_{COUNTRY}.xlsx')
+    return data
+
+def phone_nationality_filter(data):
     
+    def check(numero_telefono):
+        try:
+            pais = pycountry.countries.get(name=COUNTRY)
+            abreviacion = pais.alpha_2
+            # Parsear el número de teléfono
+            numero_parsed = phonenumbers.parse(numero_telefono, abreviacion)
+            # Verificar si el número es válido y si pertenece a Paraguay
+            return phonenumbers.is_valid_number(numero_parsed) and phonenumbers.region_code_for_number(numero_parsed) == abreviacion
+        except phonenumbers.NumberParseException:
+            # Manejar excepciones si el número no se puede analizar
+            return False
+        
+    data['telefono'] = data['telefono'].astype(str)
+    for indice, valor in enumerate(data[3]):
+        if not check(valor):
+            data = data.drop(indice)
+
+    data.to_excel(f'contactos_nacionales_con_telefono_{COUNTRY}.xlsx', index=False)
+
+    return data
+
+
+def existe_en_whatsapp(phone, driver):
+    input = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[1]/div/div/div[2]/input')
+    time.sleep(1)
+    input.send_keys(phone)
+    time.sleep(3) 
+    try:
+        driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[1]/span/div/span/div/div/div[2]/div[2]/div[2]')
+        input.send_keys(Keys.COMMAND + "a")
+        time.sleep(0.8)
+        input.send_keys(Keys.DELETE)
+        return True
+    except:
+        input.send_keys(Keys.COMMAND + "a")
+        time.sleep(0.8)
+        input.send_keys(Keys.DELETE)
+        return False
+        
+
+# 30 segundos para iniciar sesion
+def open_whatsapp(driver):
+    driver.get('https://web.whatsapp.com/')
+    time.sleep(30)
+    three_dots = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/div/span')
+    three_dots.click()
+    time.sleep(2)
+    new_group = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/div[3]/header/div[2]/div/span/div[5]/span/div/ul/li[1]/div')
+    new_group.click()
+    time.sleep(2)
+
+def filter(table, driver):
+    for index, row in table.iterrows():
+        phone = row['Telefono']
+        if not existe_en_whatsapp(phone, driver):
+            table = table.drop(index)
+            print(phone)
+        else:
+            print(phone + '---> ok')
+    table.to_excel(f'prospectos_{COUNTRY}.xlsx')
+    return
+
 
 def main():
     driver = create_driver()
     cities = load_cities()
+    # Generacion de data sin procesar
     workbook_name = scrap_maps(cities, driver)
-    phone_filter(workbook_name)
+    # Filtro de telefonos
+    data = phone_filter(workbook_name)
+    # Filtro de telefonos nacionales
+    data = phone_nationality_filter(data)
+    # Filtro de prospectos
+    open_whatsapp(driver)
+    data = filter(data, driver)                        
 
     driver.close()
 
