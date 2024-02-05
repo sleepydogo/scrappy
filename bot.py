@@ -179,8 +179,8 @@ def phone_nationality_filter(data):
     
     def check(numero_telefono):
         try:
-            pais = pycountry.countries.get(name=COUNTRY)
-            abreviacion = pais.alpha_2
+            pais = pycountry.countries.search_fuzzy(COUNTRY)
+            abreviacion = pais[0].alpha_2
             # Parsear el número de teléfono
             numero_parsed = phonenumbers.parse(numero_telefono, abreviacion)
             # Verificar si el número es válido y si pertenece a Paraguay
@@ -189,8 +189,8 @@ def phone_nationality_filter(data):
             # Manejar excepciones si el número no se puede analizar
             return False
         
-    data['telefono'] = data['telefono'].astype(str)
-    for indice, valor in enumerate(data[3]):
+    data['Telefono'] = data['Telefono'].astype(str)
+    for indice, valor in enumerate(data['Telefono']):
         if not check(valor):
             data = data.drop(indice)
 
