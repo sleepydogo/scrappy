@@ -1,12 +1,10 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
-#from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains 
-from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
-
+from selenium.common.exceptions import NoSuchElementException
+import pandas as pd
 import time, xlsxwriter, os, textwrap, argparse, platform, sys
 
 # Variables globales
@@ -102,7 +100,6 @@ def search_city(name, driver, worksheet):
         worksheet.write(a+1, 5, str(direccion))
         a += 1
 
-#  Esta funcion lee la lista de ciudades y la retorna    
 def load_cities():
     '''
     Lee las ciudades dentro de la lista de ciudades
@@ -135,7 +132,6 @@ def create_driver():
     time.sleep(4)
     return driver
 
-
 def scrap_maps(cities, driver):
     '''
     Esta funcion scrapea maps, almacenando todo lo que encuentra en un archivo 
@@ -145,8 +141,9 @@ def scrap_maps(cities, driver):
     driver.get('https://www.google.com/maps')
     # Le damos un delay para que cargue la info
     time.sleep(1)
+    filename = f'raw_data_{OUTPUT}.xlsx'
     # creamos el archivo xlsx
-    workbook = xlsxwriter.Workbook(f'raw_data_{OUTPUT}.xlsx')
+    workbook = xlsxwriter.Workbook(filename)
     worksheet = workbook.add_worksheet('Primera Pagina')
     worksheet.write(0,0,'#')
     worksheet.write(0,1,'Nombre')
@@ -154,15 +151,34 @@ def scrap_maps(cities, driver):
     worksheet.write(0,3,'Telefono')
     worksheet.write(0,4,'Web')
     worksheet.write(0,5,'Direccion')
+    # Scrapeamos maps y almacenamos cada resultado en una fila del dataset
     for city in cities:
         search_city(city, driver, worksheet)
+    # Lo guardamos
     workbook.close()
-    return  
+    # Volvemos a leerlo y descartamos duplicados
+    # TODO: Mejorar esta parte
+    df = pd.read_excel(filename)
+    df = df.drop_duplicates()
+    df.to_excel(filename)
+    return filename
+
+
+def phone_filter(workbook_name):
+    '''
+    Esta funcion carga de nuevo el excel con los contactos y filtra dejando
+    solo los que tengan un numero de telefono
+    '''
+    dataset = pd.read_excel(workbook_name)
+    data = data[~data['Telefono'].astype(str).str.contains('#')]
+    data = data[~data['Telefono'].astype(str).str.contains('[a-zA-Z]')]
+    
 
 def main():
     driver = create_driver()
     cities = load_cities()
-    scrap_maps(cities, driver)
+    workbook_name = scrap_maps(cities, driver)
+    phone_filter(workbook_name)
 
     driver.close()
 
