@@ -1,0 +1,15 @@
+Archivo: 	taxi_Bolivia_raw_data.xlsx, 
+Datos: 		240
+ ################# 
+Archivo: 	taxi_Bolivia_contactos_nacionales_con_telefono.xlsx, 
+Datos: 		98
+ ################# 
+Archivo: 	taxi_Bolivia_contactos_con_telefono.xlsx, 
+Datos: 		110
+ ################# 
+Archivo: 	taxi_Bolivia_prospectos.xlsx, 
+Datos: 		57
+ ################# 
+
+
+Solo el 23.75% de empresas son prospectos
