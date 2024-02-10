@@ -11,5 +11,5 @@ Usage:
 ```
 $ source env/bin/activate
 $ pip install -r requirements.txt
-$ python3 bot.py -c Bolivia -l hola.txt -cat taxi -o destino
+$ python3 bot.py -c Bolivia -l hola.txt -cat taxi 
 ```
