@@ -332,7 +332,7 @@ def main():
     # Filtro de telefonos nacionales
     workbook_name_phone_nationality_filter = phone_nationality_filter(workbook_name_phone_filter)
     # Filtro de prospectos
-    reproducir_alarma_continuamente('../utils/alarma.mp3')
+    reproducir_alarma_continuamente('../assets/alarm.mp3')
     #workbook_name_phone_nationality_filter = 'taxi_Mexico_contactos_nacionales_con_telefono.xlsx'
     open_whatsapp(driver)
     filter(workbook_name_phone_nationality_filter, driver)                        
